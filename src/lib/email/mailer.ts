@@ -36,11 +36,11 @@ function getTransporter() {
 // ─── Send the OTP email ─────────────────────────────────────────────────────
 
 export async function sendOtpEmail(email: string, code: string): Promise<void> {
-  const from = process.env.SMTP_FROM ?? process.env.SMTP_USER;
+  const from = process.env.SMTP_USER;
   const transporter = getTransporter();
 
   await transporter.sendMail({
-    from: `"Nexus" <${from}>`,
+    from: `"Nexus Team Task Manager" <${from}>`,
     to: email,
     subject: `Your Nexus login code: ${code}`,
     text: `Your one-time login code is: ${code}\n\nThis code expires in 10 minutes. Do not share it with anyone.`,
