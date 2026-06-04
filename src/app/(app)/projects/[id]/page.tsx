@@ -446,7 +446,7 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
       {/* Members Panel Modal */}
       {showMembers && (
         <div className="modal-backdrop" onClick={() => setShowMembers(false)}>
-          <div className="modal" style={{ maxWidth: '520px' }} onClick={(e) => e.stopPropagation()}>
+          <div className="modal" style={{ width: '100%', maxWidth: '32.5rem' }} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
               <h2>Team Members</h2>
               <button className="btn-icon" onClick={() => setShowMembers(false)}>✕</button>

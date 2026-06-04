@@ -78,7 +78,7 @@ export default async function DashboardPage() {
   const activity: ActivityLog[] = ((activityRes as { data?: unknown[] }).data ?? []) as ActivityLog[];
 
   return (
-    <div style={{ maxWidth: '1100px' }}>
+    <div style={{ width: '100%', maxWidth: '68.75rem' }}>
       {/* Header */}
       <div style={{ marginBottom: '32px' }}>
         <h1 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '6px' }}>

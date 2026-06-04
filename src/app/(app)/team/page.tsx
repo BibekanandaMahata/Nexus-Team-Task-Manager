@@ -49,7 +49,7 @@ export default function TeamPage() {
   const displayed = searchQ.length >= 1 ? searchResults : members;
 
   return (
-    <div style={{ maxWidth: '800px' }}>
+    <div style={{ width: '100%', maxWidth: '50rem' }}>
       {/* Header */}
       <div style={{ marginBottom: '32px' }}>
         <h1 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '4px' }}>Team</h1>

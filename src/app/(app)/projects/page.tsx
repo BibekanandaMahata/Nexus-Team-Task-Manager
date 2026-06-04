@@ -66,7 +66,7 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div style={{ maxWidth: '1000px' }}>
+    <div style={{ width: '100%', maxWidth: '62.5rem' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
         <div>

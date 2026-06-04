@@ -103,7 +103,7 @@ export default function LoginPage() {
         }}
       />
 
-      <div style={{ width: '100%', maxWidth: '420px', position: 'relative', zIndex: 1 }}>
+      <div style={{ width: '100%', maxWidth: '26.25rem', position: 'relative', zIndex: 1 }}>
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <div
