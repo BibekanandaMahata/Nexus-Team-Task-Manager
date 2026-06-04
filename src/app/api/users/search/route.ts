@@ -15,10 +15,10 @@ export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams.get('q')?.trim();
   const db = getSupabase();
 
-  let query = db.from('users').select('id, username');
+  let query = db.from('users').select('id, username, first_name, last_name');
 
   if (q && q.length >= 2) {
-    query = query.ilike('username', `%${q}%`);
+    query = query.or(`username.ilike.%${q}%,email.ilike.%${q}%`);
   }
 
   const { data: users, error } = await query.limit(50);

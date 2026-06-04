@@ -19,7 +19,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <div className="app-bg-grid" />
       <div className="app-ambient-glow" />
 
-      <Sidebar firstName={session.first_name} lastName={session.last_name} username={session.username} />
+      <Sidebar firstName={session.first_name} lastName={session.last_name} username={session.username} email={session.email} />
       <main
         style={{
           flex: 1,

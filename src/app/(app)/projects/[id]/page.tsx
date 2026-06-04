@@ -542,7 +542,9 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
                     </div>
                     <div>
                       <div style={{ fontSize: '13px', fontWeight: 600 }}>{m.users.username}</div>
-                      <div style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>{m.users.email}</div>
+                      {m.users.email && (
+                        <div style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>{m.users.email}</div>
+                      )}
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

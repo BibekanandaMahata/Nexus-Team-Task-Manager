@@ -21,9 +21,10 @@ interface SidebarProps {
   firstName: string | null;
   lastName: string | null;
   username: string;
+  email: string;
 }
 
-export function Sidebar({ firstName, lastName, username }: SidebarProps) {
+export function Sidebar({ firstName, lastName, username, email }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -72,8 +73,11 @@ export function Sidebar({ firstName, lastName, username }: SidebarProps) {
           <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '2px' }}>
             {firstName} {lastName}
           </div>
-          <div style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>
+          <div style={{ fontSize: '12px', color: 'var(--color-text-muted)', marginBottom: '2px' }}>
             @{username}
+          </div>
+          <div style={{ fontSize: '11px', color: 'var(--color-text-muted)' }} className="truncate">
+            {email}
           </div>
         </div>
         <button

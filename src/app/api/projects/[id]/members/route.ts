@@ -116,5 +116,12 @@ export async function GET(_request: NextRequest, { params }: Params) {
     return Response.json({ error: 'Failed to fetch members.' }, { status: 500 });
   }
 
-  return Response.json({ members: members ?? [] }, { status: 200 });
+  const redactedMembers = (members ?? []).map((m: any) => {
+    if (m.users && m.users.id !== session.userId) {
+      return { ...m, users: { ...m.users, email: null } };
+    }
+    return m;
+  });
+
+  return Response.json({ members: redactedMembers }, { status: 200 });
 }
