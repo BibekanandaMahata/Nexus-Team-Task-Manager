@@ -227,7 +227,7 @@ export default function LoginPage() {
                   />
                 </div>
 
-                 {error && (
+                {error && (
                   <div
                     style={{
                       padding: '10px 14px',
@@ -273,7 +273,7 @@ export default function LoginPage() {
           </div>
 
           <p className="login-disclaimer">
-            No passwords. No account creation. Just your email.
+            Log in instantly with a one-time password—no registration required.
           </p>
         </div>
       </div>
