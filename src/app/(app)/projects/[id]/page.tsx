@@ -110,6 +110,7 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [ownerId, setOwnerId] = useState<string | null>(null);
 
   // Task modal state
   const [editingTask, setEditingTask] = useState<Task | null>(null);
@@ -144,21 +145,24 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const [tasksRes, membersRes, meRes] = await Promise.all([
+    const [tasksRes, membersRes, meRes, projectRes] = await Promise.all([
       fetch(`/api/tasks?projectId=${projectId}`),
       fetch(`/api/projects/${projectId}/members`),
       fetch('/api/users/me'),
+      fetch(`/api/projects/${projectId}`),
     ]);
 
-    const [tasksData, membersData, meData] = await Promise.all([
+    const [tasksData, membersData, meData, projectData] = await Promise.all([
       tasksRes.json(),
       membersRes.json(),
       meRes.json(),
+      projectRes.json(),
     ]);
 
     setTasks(tasksData.tasks ?? []);
     setMembers(membersData.members ?? []);
-    setIsAdmin(meData.user?.role_id === 1);
+    setIsAdmin(projectData.project?.owner_id === meData.user?.id);
+    setOwnerId(projectData.project?.owner_id ?? null);
     setLoading(false);
   }, [projectId]);
 
@@ -542,10 +546,10 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span className={`badge ${m.users.role_id === 1 ? 'badge-admin' : 'badge-member'}`}>
-                      {m.users.role_id === 1 ? 'Admin' : 'Member'}
+                    <span className={`badge ${m.users.id === ownerId ? 'badge-admin' : 'badge-member'}`}>
+                      {m.users.id === ownerId ? 'Creator' : 'Member'}
                     </span>
-                    {isAdmin && (
+                    {isAdmin && m.users.id !== ownerId && (
                       <button
                         id={`remove-member-${m.users.id}`}
                         className="btn btn-danger btn-sm"

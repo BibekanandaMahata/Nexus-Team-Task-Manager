@@ -9,6 +9,8 @@ const schema = z.object({
     .min(2, { message: 'Username must be at least 2 characters.' })
     .max(32, { message: 'Username must be at most 32 characters.' })
     .regex(/^[a-zA-Z0-9_-]+$/, { message: 'Username can only contain letters, numbers, underscores, and hyphens.' }),
+  first_name: z.string().min(1, { message: 'First name is required.' }),
+  last_name: z.string().nullable().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -17,9 +19,9 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: 'Unauthorized.' }, { status: 401 });
   }
 
-  // Check if they actually have a temporary username
-  if (!session.username.startsWith('nexus_user_')) {
-    return Response.json({ error: 'Username has already been set.' }, { status: 400 });
+  // Check if they actually have an incomplete profile
+  if (!session.username.startsWith('nexus_user_') && session.first_name) {
+    return Response.json({ error: 'Profile is already complete.' }, { status: 400 });
   }
 
   const body = await request.json().catch(() => null);
@@ -32,7 +34,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { username } = parsed.data;
+  const { username, first_name, last_name } = parsed.data;
   const db = getSupabase();
 
   // 1. Check uniqueness of the new username
@@ -42,19 +44,23 @@ export async function POST(request: NextRequest) {
     .eq('username', username.trim())
     .single();
 
-  if (existingUser) {
+  if (existingUser && existingUser.id !== session.userId) {
     return Response.json(
       { error: 'That username is already taken. Please choose another.' },
       { status: 409 }
     );
   }
 
-  // 2. Update username in the DB
+  // 2. Update profile in the DB
   const { data: updatedUser, error: updateError } = await db
     .from('users')
-    .update({ username: username.trim() })
+    .update({ 
+      username: username.trim(),
+      first_name: first_name.trim(),
+      last_name: last_name?.trim() || null
+    })
     .eq('id', session.userId)
-    .select('id, username, email, role_id')
+    .select('id, username, email, role_id, first_name, last_name')
     .single();
 
   if (updateError || !updatedUser) {
@@ -62,11 +68,12 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: 'Failed to update username.' }, { status: 500 });
   }
 
-  // 3. Issue updated session cookie
   await setSessionCookie({
     userId: updatedUser.id,
     email: updatedUser.email,
     username: updatedUser.username,
+    first_name: updatedUser.first_name,
+    last_name: updatedUser.last_name,
     roleId: updatedUser.role_id,
   });
 

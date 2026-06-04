@@ -84,7 +84,7 @@ export default async function DashboardPage() {
         <h1 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '6px' }}>
           Good{' '}
           {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'},{' '}
-          <span className="gradient-text">{session.username}</span> 👋
+          <span className="gradient-text">{session.first_name || session.username}</span> 👋
         </h1>
         <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px' }}>
           Here&apos;s what&apos;s happening across your projects today.

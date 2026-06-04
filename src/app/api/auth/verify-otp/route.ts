@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
   // ── 3. Find or create the user ───────────────────────────────────────────
   let { data: user } = await db
     .from('users')
-    .select('id, username, email, role_id')
+    .select('id, username, email, role_id, first_name, last_name')
     .eq('email', email)
     .single();
 
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
       const { data, error } = await db
         .from('users')
         .insert({ email, username: finalUsername })
-        .select('id, username, email, role_id')
+        .select('id, username, email, role_id, first_name, last_name')
         .single();
 
       if (!error && data) {
@@ -90,6 +90,8 @@ export async function POST(request: NextRequest) {
     userId: user.id,
     email: user.email,
     username: user.username,
+    first_name: user.first_name,
+    last_name: user.last_name,
     roleId: user.role_id,
   });
 

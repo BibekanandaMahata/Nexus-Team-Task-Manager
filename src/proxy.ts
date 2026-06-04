@@ -6,14 +6,14 @@ import { getSessionFromRequest } from '@/lib/auth/session';
 const PROTECTED_PREFIXES = ['/dashboard', '/projects', '/team'];
 const AUTH_ROUTES = ['/login'];
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isProtected = PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix));
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route));
   const isHomepage = pathname === '/';
 
-  const session = getSessionFromRequest(request);
+  const session = await getSessionFromRequest(request);
 
   // Redirect unauthenticated users away from protected routes
   if (isProtected && !session) {

@@ -18,11 +18,12 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 interface SidebarProps {
+  firstName: string | null;
+  lastName: string | null;
   username: string;
-  roleName: string;
 }
 
-export function Sidebar({ username, roleName }: SidebarProps) {
+export function Sidebar({ firstName, lastName, username }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -68,12 +69,12 @@ export function Sidebar({ username, roleName }: SidebarProps) {
         }}
       >
         <div style={{ padding: '8px 12px' }}>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '2px' }}>
-            {username}
+          <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '2px' }}>
+            {firstName} {lastName}
           </div>
-          <span className={`badge ${roleName === 'Admin' ? 'badge-admin' : 'badge-member'}`}>
-            {roleName}
-          </span>
+          <div style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>
+            @{username}
+          </div>
         </div>
         <button
           id="logout-btn"

@@ -8,20 +8,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const session = await getSession();
   if (!session) redirect('/login');
 
-  // Restrict temporary users from navigating the app until they set their username
-  if (session.username.startsWith('nexus_user_')) {
+  // Restrict temporary users from navigating the app until they complete their profile
+  if (session.username.startsWith('nexus_user_') || !session.first_name) {
     return <UsernameOnboarding />;
   }
-
-  // Fetch role name for sidebar badge
-  const db = getSupabase();
-  const { data: roleRow } = await db
-    .from('roles')
-    .select('name')
-    .eq('id', session.roleId)
-    .single();
-
-  const roleName = roleRow?.name ?? 'Member';
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', position: 'relative', overflow: 'hidden', backgroundColor: 'var(--color-bg)' }}>
@@ -29,7 +19,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <div className="app-bg-grid" />
       <div className="app-ambient-glow" />
 
-      <Sidebar username={session.username} roleName={roleName} />
+      <Sidebar firstName={session.first_name} lastName={session.last_name} username={session.username} />
       <main
         style={{
           flex: 1,

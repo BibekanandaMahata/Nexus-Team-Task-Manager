@@ -29,11 +29,15 @@ export async function POST(request: NextRequest, { params }: Params) {
   const session = await getSession();
   if (!session) return Response.json({ error: 'Unauthorized.' }, { status: 401 });
 
-  if (session.roleId !== 1) {
-    return Response.json({ error: 'Forbidden. Admin role required.' }, { status: 403 });
-  }
-
   const { id: projectId } = await params;
+
+  const db = getSupabase();
+
+  // Role check: only Project Owner may add members
+  const { data: project } = await db.from('projects').select('owner_id').eq('id', projectId).single();
+  if (!project || project.owner_id !== session.userId) {
+    return Response.json({ error: 'Forbidden. Project owner required to invite members.' }, { status: 403 });
+  }
 
   const isMember = await assertMembership(projectId, session.userId);
   if (!isMember) return Response.json({ error: 'Forbidden.' }, { status: 403 });
@@ -47,8 +51,6 @@ export async function POST(request: NextRequest, { params }: Params) {
       { status: 400 }
     );
   }
-
-  const db = getSupabase();
 
   // Verify the target user exists
   const { data: targetUser } = await db
