@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import Logo from './Logo';
 
 interface NavItem {
   href: string;
@@ -35,35 +36,7 @@ export function Sidebar({ username, roleName }: SidebarProps) {
     <aside className="sidebar">
       {/* Logo */}
       <div className="sidebar-logo">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: '10px',
-              background: 'linear-gradient(135deg, #818cf8, #a78bfa)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '18px',
-              flexShrink: 0,
-            }}
-          >
-            ⚡
-          </div>
-          <span
-            style={{
-              fontSize: '20px',
-              fontWeight: 800,
-              background: 'linear-gradient(135deg, #818cf8, #a78bfa)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
-          >
-            Nexus
-          </span>
-        </div>
+        <Logo variant="short" size="md" />
       </div>
 
       {/* Navigation */}
