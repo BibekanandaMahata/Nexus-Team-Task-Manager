@@ -127,11 +127,8 @@ export default function TeamPage() {
                   {member.username[0].toUpperCase()}
                 </div>
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '2px' }} className="truncate">
+                  <div style={{ fontSize: '14px', fontWeight: 600 }} className="truncate">
                     {member.username}
-                  </div>
-                  <div style={{ fontSize: '11px', color: 'var(--color-text-muted)' }} className="truncate">
-                    {member.email}
                   </div>
                 </div>
               </div>

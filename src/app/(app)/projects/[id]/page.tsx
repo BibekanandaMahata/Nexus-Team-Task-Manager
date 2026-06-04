@@ -132,7 +132,7 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
   // Member panel
   const [showMembers, setShowMembers] = useState(false);
   const [searchQ, setSearchQ] = useState('');
-  const [searchResults, setSearchResults] = useState<{ id: string; username: string; email: string }[]>([]);
+  const [searchResults, setSearchResults] = useState<{ id: string; username: string }[]>([]);
   const [addingMember, setAddingMember] = useState(false);
 
   const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' } | null>(null);
@@ -488,7 +488,7 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
                           fontSize: '13px',
                         }}
                       >
-                        <span>{u.username} <span style={{ color: 'var(--color-text-muted)' }}>({u.email})</span></span>
+                        <span>{u.username}</span>
                         <button
                           id={`invite-${u.id}`}
                           className="btn btn-primary btn-sm"
