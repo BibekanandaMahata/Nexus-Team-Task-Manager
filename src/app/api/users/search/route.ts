@@ -13,17 +13,15 @@ export async function GET(request: NextRequest) {
   }
 
   const q = request.nextUrl.searchParams.get('q')?.trim();
+  const db = getSupabase();
 
-  if (!q || q.length < 2) {
-    return Response.json({ error: 'Query must be at least 2 characters.' }, { status: 400 });
+  let query = db.from('users').select('id, username, first_name, last_name');
+
+  if (q && q.length >= 2) {
+    query = query.or(`username.ilike.%${q}%,email.ilike.%${q}%`);
   }
 
-  const db = getSupabase();
-  const { data: users, error } = await db
-    .from('users')
-    .select('id, username, email')
-    .ilike('username', `%${q}%`)
-    .limit(10);
+  const { data: users, error } = await query.limit(50);
 
   if (error) {
     return Response.json({ error: 'Search failed.' }, { status: 500 });

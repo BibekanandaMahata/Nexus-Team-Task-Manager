@@ -84,7 +84,7 @@ export default async function DashboardPage() {
         <h1 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '6px' }}>
           Good{' '}
           {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'},{' '}
-          <span className="gradient-text">{session.username}</span> 👋
+          <span className="gradient-text">{session.first_name || session.username}</span> 👋
         </h1>
         <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px' }}>
           Here&apos;s what&apos;s happening across your projects today.
@@ -158,7 +158,7 @@ export default async function DashboardPage() {
                       width: 32,
                       height: 32,
                       borderRadius: '8px',
-                      background: 'linear-gradient(135deg, rgba(129,140,248,0.2), rgba(167,139,250,0.2))',
+                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(6, 182, 212, 0.15))',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',

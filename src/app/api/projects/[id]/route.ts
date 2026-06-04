@@ -64,17 +64,12 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   return Response.json({ project }, { status: 200 });
 }
 
-// ─── DELETE /api/projects/:id ──────────────────────────────────────────────
-// Admin only. Permanently deletes project (cascades tasks + members via FK).
+// ─── GET /api/projects/:id ─────────────────────────────────────────────────
+// Fetch project details.
 
-export async function DELETE(_request: NextRequest, { params }: Params) {
+export async function GET(request: NextRequest, { params }: Params) {
   const session = await getSession();
   if (!session) return Response.json({ error: 'Unauthorized.' }, { status: 401 });
-
-  // Role check: only Admins (role_id === 1) may delete projects
-  if (session.roleId !== 1) {
-    return Response.json({ error: 'Forbidden. Admin role required.' }, { status: 403 });
-  }
 
   const { id } = await params;
 
@@ -82,6 +77,38 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
   if (!isMember) return Response.json({ error: 'Forbidden.' }, { status: 403 });
 
   const db = getSupabase();
+  const { data: project, error } = await db
+    .from('projects')
+    .select('id, name, description, owner_id, created_at')
+    .eq('id', id)
+    .single();
+
+  if (error || !project) {
+    return Response.json({ error: 'Failed to fetch project.' }, { status: 404 });
+  }
+
+  return Response.json({ project }, { status: 200 });
+}
+
+// ─── DELETE /api/projects/:id ──────────────────────────────────────────────
+// Project owner only. Permanently deletes project (cascades tasks + members via FK).
+
+export async function DELETE(_request: NextRequest, { params }: Params) {
+  const session = await getSession();
+  if (!session) return Response.json({ error: 'Unauthorized.' }, { status: 401 });
+
+  const { id } = await params;
+
+  const isMember = await assertMembership(id, session.userId);
+  if (!isMember) return Response.json({ error: 'Forbidden.' }, { status: 403 });
+
+  const db = getSupabase();
+
+  // Role check: only Project Owner may delete projects
+  const { data: project } = await db.from('projects').select('owner_id').eq('id', id).single();
+  if (!project || project.owner_id !== session.userId) {
+    return Response.json({ error: 'Forbidden. Project owner required.' }, { status: 403 });
+  }
 
   // Log before deleting (so projectId still exists in logs)
   await logActivity({

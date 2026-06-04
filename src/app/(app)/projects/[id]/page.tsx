@@ -66,7 +66,7 @@ function TaskCard({ task, isAdmin, onEdit, onDelete, onStatusChange }: TaskCardP
                 width: 20,
                 height: 20,
                 borderRadius: '50%',
-                background: 'linear-gradient(135deg, #818cf8, #a78bfa)',
+                background: 'linear-gradient(135deg, var(--color-brand-start), var(--color-brand-end))',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -110,6 +110,7 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [ownerId, setOwnerId] = useState<string | null>(null);
 
   // Task modal state
   const [editingTask, setEditingTask] = useState<Task | null>(null);
@@ -132,7 +133,7 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
   // Member panel
   const [showMembers, setShowMembers] = useState(false);
   const [searchQ, setSearchQ] = useState('');
-  const [searchResults, setSearchResults] = useState<{ id: string; username: string; email: string }[]>([]);
+  const [searchResults, setSearchResults] = useState<{ id: string; username: string }[]>([]);
   const [addingMember, setAddingMember] = useState(false);
 
   const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' } | null>(null);
@@ -144,21 +145,24 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const [tasksRes, membersRes, meRes] = await Promise.all([
+    const [tasksRes, membersRes, meRes, projectRes] = await Promise.all([
       fetch(`/api/tasks?projectId=${projectId}`),
       fetch(`/api/projects/${projectId}/members`),
       fetch('/api/users/me'),
+      fetch(`/api/projects/${projectId}`),
     ]);
 
-    const [tasksData, membersData, meData] = await Promise.all([
+    const [tasksData, membersData, meData, projectData] = await Promise.all([
       tasksRes.json(),
       membersRes.json(),
       meRes.json(),
+      projectRes.json(),
     ]);
 
     setTasks(tasksData.tasks ?? []);
     setMembers(membersData.members ?? []);
-    setIsAdmin(meData.user?.role_id === 1);
+    setIsAdmin(projectData.project?.owner_id === meData.user?.id);
+    setOwnerId(projectData.project?.owner_id ?? null);
     setLoading(false);
   }, [projectId]);
 
@@ -488,7 +492,7 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
                           fontSize: '13px',
                         }}
                       >
-                        <span>{u.username} <span style={{ color: 'var(--color-text-muted)' }}>({u.email})</span></span>
+                        <span>{u.username}</span>
                         <button
                           id={`invite-${u.id}`}
                           className="btn btn-primary btn-sm"
@@ -525,7 +529,7 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
                         width: 32,
                         height: 32,
                         borderRadius: '50%',
-                        background: 'linear-gradient(135deg, #818cf8, #a78bfa)',
+                        background: 'linear-gradient(135deg, var(--color-brand-start), var(--color-brand-end))',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -538,14 +542,16 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
                     </div>
                     <div>
                       <div style={{ fontSize: '13px', fontWeight: 600 }}>{m.users.username}</div>
-                      <div style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>{m.users.email}</div>
+                      {m.users.email && (
+                        <div style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>{m.users.email}</div>
+                      )}
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span className={`badge ${m.users.role_id === 1 ? 'badge-admin' : 'badge-member'}`}>
-                      {m.users.role_id === 1 ? 'Admin' : 'Member'}
+                    <span className={`badge ${m.users.id === ownerId ? 'badge-admin' : 'badge-member'}`}>
+                      {m.users.id === ownerId ? 'Creator' : 'Member'}
                     </span>
-                    {isAdmin && (
+                    {isAdmin && m.users.id !== ownerId && (
                       <button
                         id={`remove-member-${m.users.id}`}
                         className="btn btn-danger btn-sm"

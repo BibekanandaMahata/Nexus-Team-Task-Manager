@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import Logo from './Logo';
 
 interface NavItem {
   href: string;
@@ -17,11 +18,13 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 interface SidebarProps {
+  firstName: string | null;
+  lastName: string | null;
   username: string;
-  roleName: string;
+  email: string;
 }
 
-export function Sidebar({ username, roleName }: SidebarProps) {
+export function Sidebar({ firstName, lastName, username, email }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -35,35 +38,7 @@ export function Sidebar({ username, roleName }: SidebarProps) {
     <aside className="sidebar">
       {/* Logo */}
       <div className="sidebar-logo">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: '10px',
-              background: 'linear-gradient(135deg, #818cf8, #a78bfa)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '18px',
-              flexShrink: 0,
-            }}
-          >
-            ⚡
-          </div>
-          <span
-            style={{
-              fontSize: '20px',
-              fontWeight: 800,
-              background: 'linear-gradient(135deg, #818cf8, #a78bfa)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
-          >
-            Nexus
-          </span>
-        </div>
+        <Logo variant="short" size="md" />
       </div>
 
       {/* Navigation */}
@@ -95,12 +70,15 @@ export function Sidebar({ username, roleName }: SidebarProps) {
         }}
       >
         <div style={{ padding: '8px 12px' }}>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '2px' }}>
-            {username}
+          <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '2px' }}>
+            {firstName} {lastName}
           </div>
-          <span className={`badge ${roleName === 'Admin' ? 'badge-admin' : 'badge-member'}`}>
-            {roleName}
-          </span>
+          <div style={{ fontSize: '12px', color: 'var(--color-text-muted)', marginBottom: '2px' }}>
+            @{username}
+          </div>
+          <div style={{ fontSize: '11px', color: 'var(--color-text-muted)' }} className="truncate">
+            {email}
+          </div>
         </div>
         <button
           id="logout-btn"

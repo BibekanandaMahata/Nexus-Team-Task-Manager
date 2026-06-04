@@ -114,7 +114,7 @@ export default function TeamPage() {
                     width: 40,
                     height: 40,
                     borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #818cf8, #a78bfa)',
+                    background: 'linear-gradient(135deg, var(--color-brand-start), var(--color-brand-end))',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -127,11 +127,8 @@ export default function TeamPage() {
                   {member.username[0].toUpperCase()}
                 </div>
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '2px' }} className="truncate">
+                  <div style={{ fontSize: '14px', fontWeight: 600 }} className="truncate">
                     {member.username}
-                  </div>
-                  <div style={{ fontSize: '11px', color: 'var(--color-text-muted)' }} className="truncate">
-                    {member.email}
                   </div>
                 </div>
               </div>

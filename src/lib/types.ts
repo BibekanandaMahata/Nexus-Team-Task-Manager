@@ -9,6 +9,8 @@ export interface User {
   id: string; // UUID
   username: string;
   email: string;
+  first_name: string | null;
+  last_name: string | null;
   role_id: number;
   created_at: string;
 }
@@ -66,6 +68,8 @@ export interface SessionPayload {
   userId: string;
   email: string;
   username: string;
+  first_name: string | null;
+  last_name: string | null;
   roleId: number;
 }
 

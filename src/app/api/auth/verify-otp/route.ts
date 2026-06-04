@@ -51,38 +51,31 @@ export async function POST(request: NextRequest) {
   // ── 3. Find or create the user ───────────────────────────────────────────
   let { data: user } = await db
     .from('users')
-    .select('id, username, email, role_id')
+    .select('id, username, email, role_id, first_name, last_name')
     .eq('email', email)
     .single();
 
   if (!user) {
-    // First-time login → require a username
-    if (!username || username.trim().length < 2) {
-      return Response.json(
-        { error: 'Please provide a username (min 2 characters) to complete registration.', requireUsername: true },
-        { status: 422 }
-      );
+    let finalUsername = `nexus_user_${Math.random().toString(36).substring(2, 10)}`;
+    let newUser = null;
+    let createError = null;
+    let retries = 3;
+
+    while (retries > 0) {
+      const { data, error } = await db
+        .from('users')
+        .insert({ email, username: finalUsername })
+        .select('id, username, email, role_id, first_name, last_name')
+        .single();
+
+      if (!error && data) {
+        newUser = data;
+        break;
+      }
+      createError = error;
+      finalUsername = `nexus_user_${Math.random().toString(36).substring(2, 10)}`;
+      retries--;
     }
-
-    // Check username uniqueness
-    const { data: existingUser } = await db
-      .from('users')
-      .select('id')
-      .eq('username', username.trim())
-      .single();
-
-    if (existingUser) {
-      return Response.json(
-        { error: 'That username is already taken. Please choose another.', requireUsername: true },
-        { status: 409 }
-      );
-    }
-
-    const { data: newUser, error: createError } = await db
-      .from('users')
-      .insert({ email, username: username.trim() })
-      .select('id, username, email, role_id')
-      .single();
 
     if (createError || !newUser) {
       console.error('[verify-otp] User creation error:', createError);
@@ -97,6 +90,8 @@ export async function POST(request: NextRequest) {
     userId: user.id,
     email: user.email,
     username: user.username,
+    first_name: user.first_name,
+    last_name: user.last_name,
     roleId: user.role_id,
   });
 
