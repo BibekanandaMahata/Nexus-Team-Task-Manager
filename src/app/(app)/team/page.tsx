@@ -114,7 +114,7 @@ export default function TeamPage() {
                     width: 40,
                     height: 40,
                     borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #818cf8, #a78bfa)',
+                    background: 'linear-gradient(135deg, var(--color-brand-start), var(--color-brand-end))',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',

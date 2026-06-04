@@ -158,7 +158,7 @@ export default async function DashboardPage() {
                       width: 32,
                       height: 32,
                       borderRadius: '8px',
-                      background: 'linear-gradient(135deg, rgba(129,140,248,0.2), rgba(167,139,250,0.2))',
+                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(6, 182, 212, 0.15))',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',

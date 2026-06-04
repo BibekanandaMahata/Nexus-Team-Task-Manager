@@ -56,9 +56,19 @@ export async function getSession(): Promise<SessionPayload | null> {
 
 // ─── Read session from a raw Request (used in middleware) ──────────────────
 
-export function getSessionFromRequest(request: Request): SessionPayload | null {
-  const cookieHeader = request.headers.get('cookie') ?? '';
-  const match = cookieHeader.match(new RegExp(`(?:^|;\\s*)${COOKIE_NAME}=([^;]+)`));
-  if (!match) return null;
-  return verifySession(decodeURIComponent(match[1]));
+export function getSessionFromRequest(request: any): SessionPayload | null {
+  try {
+    if (request.cookies && typeof request.cookies.get === 'function') {
+      const cookie = request.cookies.get(COOKIE_NAME);
+      if (cookie?.value) {
+        return verifySession(cookie.value);
+      }
+    }
+    const cookieHeader = request.headers?.get?.('cookie') ?? '';
+    const match = cookieHeader.match(new RegExp(`(?:^|;\\s*)${COOKIE_NAME}=([^;]+)`));
+    if (!match) return null;
+    return verifySession(decodeURIComponent(match[1]));
+  } catch {
+    return null;
+  }
 }

@@ -16,8 +16,6 @@ export default function LoginPage() {
   const [step, setStep] = useState<'email' | 'otp'>('email');
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
-  const [username, setUsername] = useState('');
-  const [needsUsername, setNeedsUsername] = useState(false);
   const [error, setError] = useState('');
   const [info, setInfo] = useState('');
 
@@ -58,25 +56,18 @@ export default function LoginPage() {
         body: JSON.stringify({
           email,
           code: code.trim(),
-          username: needsUsername ? username.trim() : undefined,
         }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        if (data.requireUsername) {
-          setNeedsUsername(true);
-          setError(data.error);
-          return;
-        }
         setError(data.error ?? 'Verification failed.');
         return;
       }
 
-      // Success → go to dashboard
-      router.push('/dashboard');
-      router.refresh();
+      // Success → force full page reload to sync cookies and go to dashboard
+      window.location.href = '/dashboard';
     });
   }
 
@@ -236,28 +227,7 @@ export default function LoginPage() {
                   />
                 </div>
 
-                {needsUsername && (
-                  <div className="form-group">
-                    <label htmlFor="username-input">Choose a username</label>
-                    <input
-                      id="username-input"
-                      type="text"
-                      className="input"
-                      placeholder="yourname"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      required
-                      minLength={2}
-                      maxLength={32}
-                      disabled={isPending}
-                    />
-                    <p style={{ fontSize: '12px', color: 'var(--color-text-muted)', marginTop: '4px' }}>
-                      First time here! Pick a unique username to continue.
-                    </p>
-                  </div>
-                )}
-
-                {error && (
+                 {error && (
                   <div
                     style={{
                       padding: '10px 14px',
@@ -293,7 +263,6 @@ export default function LoginPage() {
                     setCode('');
                     setError('');
                     setInfo('');
-                    setNeedsUsername(false);
                   }}
                   disabled={isPending}
                 >
