@@ -17,6 +17,10 @@ function createTransporter() {
     port,
     secure: port === 465,
     auth: { user, pass },
+    tls: {
+      // Do not fail on invalid certs
+      rejectUnauthorized: false,
+    },
   });
 }
 
