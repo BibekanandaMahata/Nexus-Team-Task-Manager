@@ -1,35 +1,7 @@
 @import "tailwindcss";
 
 /* ─── Design Tokens ────────────────────────────────────────── */
-:root {
-  /* Brand */
-  --color-brand-start: #3b82f6;
-  --color-brand-end: #06b6d4;
-  --color-brand-mid: #0284c7;
-  --color-brand-glow-rgb: 59, 130, 246;
-
-  /* Surfaces */
-  --color-bg: #0b0f19;
-  --color-surface: #111827;
-  --color-surface-2: #1f2937;
-  --color-surface-3: #111827;
-  --color-border: #1e293b;
-  --color-border-hover: #334155;
-
-  /* Text */
-  --color-text-primary: #f8fafc;
-  --color-text-secondary: #94a3b8;
-  --color-text-muted: #475569;
-
-  /* Status */
-  --color-todo: #3b82f6;
-  --color-inprogress: #f59e0b;
-  --color-done: #22c55e;
-
-  /* Semantic */
-  --color-danger: #ef4444;
-  --color-success: #22c55e;
-}
+/* Dynamic layout-injected CSS custom properties are loaded from src/ui-kit/colors.ts */
 
 /* ─── Base Reset ───────────────────────────────────────────── */
 *, *::before, *::after {
@@ -53,14 +25,14 @@ html, body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-surface);
+  background: var(--color-scrollbar-track);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border-hover);
+  background: var(--color-scrollbar-thumb);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #52525b;
+  background: var(--color-scrollbar-thumb-hover);
 }
 
 /* ─── Typography ────────────────────────────────────────────── */
@@ -220,29 +192,29 @@ textarea.input {
   text-transform: uppercase;
 }
 .badge-todo {
-  background: rgba(59, 130, 246, 0.12);
-  color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: var(--color-badge-todo-bg);
+  color: var(--color-badge-todo-text);
+  border: 1px solid var(--color-badge-todo-border);
 }
 .badge-inprogress {
-  background: rgba(245, 158, 11, 0.12);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.2);
+  background: var(--color-badge-inprogress-bg);
+  color: var(--color-badge-inprogress-text);
+  border: 1px solid var(--color-badge-inprogress-border);
 }
 .badge-done {
-  background: rgba(34, 197, 94, 0.12);
-  color: #4ade80;
-  border: 1px solid rgba(34, 197, 94, 0.2);
+  background: var(--color-badge-done-bg);
+  color: var(--color-badge-done-text);
+  border: 1px solid var(--color-badge-done-border);
 }
 .badge-admin {
-  background: rgba(var(--color-brand-glow-rgb), 0.12);
-  color: var(--color-brand-start);
-  border: 1px solid rgba(var(--color-brand-glow-rgb), 0.2);
+  background: var(--color-badge-admin-bg);
+  color: var(--color-badge-admin-text);
+  border: 1px solid var(--color-badge-admin-border);
 }
 .badge-member {
-  background: rgba(113, 113, 122, 0.15);
-  color: #a1a1aa;
-  border: 1px solid rgba(113, 113, 122, 0.2);
+  background: var(--color-badge-member-bg);
+  color: var(--color-badge-member-text);
+  border: 1px solid var(--color-badge-member-border);
 }
 
 /* ─── Modal ──────────────────────────────────────────────────── */
@@ -286,14 +258,14 @@ textarea.input {
   animation: slideInRight 0.25s ease;
 }
 .toast-success {
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  color: #4ade80;
+  background: var(--color-toast-success-bg);
+  border: 1px solid var(--color-toast-success-border);
+  color: var(--color-toast-success-text);
 }
 .toast-error {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #f87171;
+  background: var(--color-toast-error-bg);
+  border: 1px solid var(--color-toast-error-border);
+  color: var(--color-toast-error-text);
 }
 
 /* ─── Loading Spinner ────────────────────────────────────────── */

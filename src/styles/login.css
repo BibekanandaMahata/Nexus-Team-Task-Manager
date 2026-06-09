@@ -9,18 +9,7 @@
   position: relative;
   background-color: #0b0f19;
   color: #f8fafc;
-  /* Local variable overrides for dark slate theme styling */
-  --color-bg: #0b0f19;
-  --color-text-primary: #f8fafc;
-  --color-text-secondary: #94a3b8;
-  --color-text-muted: #475569;
-  --color-border: #1e293b;
-  --color-surface: #111827;
-  --color-surface-2: #1f2937;
-  --color-surface-3: #111827;
-  --color-brand-start: #3b82f6;
-  --color-brand-end: #06b6d4;
-  --color-brand-glow-rgb: 59, 130, 246;
+  /* Design variables are loaded dynamically from src/ui-kit/colors.ts on :root */
 }
 
 .login-form-side {

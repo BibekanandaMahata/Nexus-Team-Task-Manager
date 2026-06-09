@@ -9,18 +9,7 @@
   justify-content: space-between;
   position: relative;
   overflow: hidden;
-  /* Local design variables override */
-  --color-bg: #0b0f19;
-  --color-text-primary: #f8fafc;
-  --color-text-secondary: #94a3b8;
-  --color-text-muted: #475569;
-  --color-border: #1e293b;
-  --color-surface: #111827;
-  --color-surface-2: #1f2937;
-  --color-surface-3: #111827;
-  --color-brand-start: #3b82f6;
-  --color-brand-end: #06b6d4;
-  --color-brand-glow-rgb: 59, 130, 246;
+  /* Design variables are loaded dynamically from src/ui-kit/colors.ts on :root */
 }
 
 /* Premium Ambient Background Glows */
@@ -161,9 +150,9 @@
   border-radius: 50%;
   opacity: 0.6;
 }
-.landing-mockup-dot.red { background: #ef4444; }
-.landing-mockup-dot.orange { background: #fb923c; }
-.landing-mockup-dot.green { background: #22c55e; }
+.landing-mockup-dot.red { background: var(--color-mockup-dot-red); }
+.landing-mockup-dot.orange { background: var(--color-mockup-dot-orange); }
+.landing-mockup-dot.green { background: var(--color-mockup-dot-green); }
 
 .landing-mockup-address {
   margin-left: 1rem;
@@ -236,16 +225,16 @@
   text-transform: uppercase;
 }
 .landing-mockup-card-tag.db {
-  color: var(--color-brand-start);
-  background: rgba(var(--color-brand-glow-rgb), 0.1);
+  color: var(--color-mockup-tag-db-text);
+  background: var(--color-mockup-tag-db-bg);
 }
 .landing-mockup-card-tag.design {
-  color: #ec4899;
-  background: rgba(236, 72, 153, 0.1);
+  color: var(--color-mockup-tag-design-text);
+  background: var(--color-mockup-tag-design-bg);
 }
 .landing-mockup-card-tag.auth {
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
+  color: var(--color-mockup-tag-auth-text);
+  background: var(--color-mockup-tag-auth-bg);
 }
 
 .landing-mockup-card-priority {
@@ -255,16 +244,16 @@
   border-radius: 0.1875rem;
 }
 .landing-mockup-card-priority.medium {
-  color: var(--color-inprogress);
-  background: rgba(245, 158, 11, 0.08);
+  color: var(--color-mockup-priority-medium-text);
+  background: var(--color-mockup-priority-medium-bg);
 }
 .landing-mockup-card-priority.high {
-  color: var(--color-danger);
-  background: rgba(239, 68, 68, 0.08);
+  color: var(--color-mockup-priority-high-text);
+  background: var(--color-mockup-priority-high-bg);
 }
 .landing-mockup-card-priority.low {
-  color: var(--color-text-muted);
-  background: rgba(255, 255, 255, 0.03);
+  color: var(--color-mockup-priority-low-text);
+  background: var(--color-mockup-priority-low-bg);
 }
 
 .landing-mockup-card-title {
@@ -299,9 +288,9 @@
   align-items: center;
   justify-content: center;
 }
-.landing-mockup-avatar.elena { background: #f43f5e; }
-.landing-mockup-avatar.sarah { background: #6366f1; }
-.landing-mockup-avatar.marcus { background: #3b82f6; }
+.landing-mockup-avatar.elena { background: var(--color-mockup-avatar-elena); }
+.landing-mockup-avatar.sarah { background: var(--color-mockup-avatar-sarah); }
+.landing-mockup-avatar.marcus { background: var(--color-mockup-avatar-marcus); }
 
 .landing-mockup-user-name {
   font-size: 10px;

@@ -3,32 +3,117 @@
 import React from 'react';
 import Link from 'next/link';
 import Logo from './Logo';
-import '../styles/landing.css';
+import { ThemeName, THEME_OPTIONS, useTheme } from '@/ui-kit';
+import '@/styles/landing.css';
 
 export default function LandingPage() {
+  const { theme, changeTheme } = useTheme();
+  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+
   return (
     <div className="landing-container">
-      
+
       {/* Premium Ambient Background Glows */}
       <div className="landing-ambient-glow" />
-      
+
       {/* Background Grid Pattern */}
       <div className="landing-bg-grid" />
 
       {/* Header */}
       <header className="landing-header">
         <Logo variant="full" size="sm" />
-        <Link 
-          href="/login" 
-          className="landing-signin-link"
-        >
-          Sign In
-        </Link>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <Link
+            href="/login"
+            className="landing-signin-link"
+          >
+            Sign In
+          </Link>
+
+          {/* Theme Dropdown Selector */}
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className="landing-signin-link"
+              style={{
+                color: 'var(--color-text-secondary)',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+              }}
+            >
+              <span>Change Theme</span>
+              <span style={{ fontSize: '10px', opacity: 0.7, transition: 'transform 0.18s ease', transform: dropdownOpen ? 'rotate(180deg)' : 'none' }}>▼</span>
+            </button>
+
+            {dropdownOpen && (
+              <>
+                {/* Click outside backdrop */}
+                <div
+                  onClick={() => setDropdownOpen(false)}
+                  style={{ position: 'fixed', inset: 0, zIndex: 998 }}
+                />
+
+                {/* Options List */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 'calc(100% + 8px)',
+                    right: 0,
+                    background: 'var(--color-surface)',
+                    border: '1px solid var(--color-border)',
+                    borderRadius: '8px',
+                    padding: '4px',
+                    width: '140px',
+                    boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)',
+                    zIndex: 999,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '2px',
+                  }}
+                >
+                  {THEME_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.id}
+                      onClick={() => {
+                        changeTheme(opt.id);
+                        setDropdownOpen(false);
+                      }}
+                      style={{
+                        background: theme === opt.id ? 'rgba(var(--color-brand-glow-rgb), 0.1)' : 'transparent',
+                        border: 'none',
+                        borderRadius: '6px',
+                        padding: '8px 12px',
+                        color: theme === opt.id ? 'var(--color-brand-start)' : 'var(--color-text-secondary)',
+                        fontSize: '13px',
+                        fontWeight: theme === opt.id ? 600 : 400,
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: opt.color }} />
+                        {opt.label}
+                      </div>
+                      {theme === opt.id && <span style={{ fontSize: '12px' }}>✓</span>}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
       </header>
 
       {/* Main Hero & Content */}
       <main className="landing-main">
-        
+
         {/* Hero Headline & Intro */}
         <div className="landing-hero">
           <h1 className="landing-hero-h1">
@@ -37,15 +122,15 @@ export default function LandingPage() {
               simplified.
             </span>
           </h1>
-          
+
           <p className="landing-hero-p">
             Nexus integrates visual Kanban layouts, secure passwordless email credentials, and automatic system audit feeds into one clean team workflow. No complexity, no bloat.
           </p>
 
           {/* Action CTA Buttons */}
           <div className="landing-cta-container">
-            <Link 
-              href="/login" 
+            <Link
+              href="/login"
               className="btn btn-primary landing-cta-btn animate-pulse"
             >
               Get Started Free ➔
@@ -68,7 +153,7 @@ export default function LandingPage() {
           {/* Kanban Interactive Mockup Area */}
           <div className="landing-mockup-content">
             <div className="kanban-board">
-              
+
               {/* Backlog Column */}
               <div className="landing-mockup-col">
                 <div className="landing-mockup-col-header">
