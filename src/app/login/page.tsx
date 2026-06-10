@@ -88,46 +88,6 @@ export default function LoginPage() {
       {/* Background Grid Pattern */}
       <div className="login-bg-grid" />
 
-      {/* LEFT COLUMN: Premium Info pane */}
-      <div className="login-info-side">
-        {/* Soft Ambient Glow */}
-        <div className="login-glow-left" />
-
-        <div className="login-slogan-wrap">
-          {/* Slogan */}
-          <h1 className="login-slogan-title">
-            Focus on what matters.<br />
-            We&apos;ll handle the alignment.
-          </h1>
-          <p className="login-slogan-desc">
-            Manage tasks dynamically, verify team sessions securely, and maintain an immutable ledger audit trail automatically.
-          </p>
-        </div>
-
-        {/* Illustration */}
-        <div className="login-illustration-container">
-          <img
-            src="/assets/login-illustration.svg"
-            alt="Nexus Kanban Illustration"
-          />
-        </div>
-
-        {/* Bulleted Benefits list */}
-        <div className="login-benefits-list">
-          <div className="login-benefit-item">
-            <span className="login-benefit-bullet">⚡</span>
-            <span className="login-benefit-text">Visual task board lanes with custom tag metrics</span>
-          </div>
-          <div className="login-benefit-item">
-            <span className="login-benefit-bullet">🔒</span>
-            <span className="login-benefit-text">Secure passwordless email OTP validation</span>
-          </div>
-          <div className="login-benefit-item">
-            <span className="login-benefit-bullet">◉</span>
-            <span className="login-benefit-text">Automated immutable audit trail tracking</span>
-          </div>
-        </div>
-      </div>
 
       {/* RIGHT COLUMN: Slick glassmorphism form */}
       <div className="login-form-side">
